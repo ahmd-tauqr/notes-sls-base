@@ -29,6 +29,7 @@ provider:
       Resource:
         - arn:aws:dynamodb:${self:provider.region}:*:table/notesTable
         - arn:aws:dynamodb:${self:provider.region}:*:table/usersTable
+        - arn:aws:dynamodb:${self:provider.region}:*:table/usersTable/index/email-index
 
 functions:
   app:

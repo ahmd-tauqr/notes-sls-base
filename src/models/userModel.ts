@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import bcrypt from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const TableName = process.env.DYNAMODB_USER_TABLE as string;
@@ -19,6 +20,7 @@ export const getUserByEmail = async (email: string) => {
 };
 
 export const createUser = async (user: any) => {
+  user.id = uuidv4();
   const params = {
     TableName,
     Item: user,
