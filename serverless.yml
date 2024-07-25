@@ -1,0 +1,104 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: ahmdtauqr
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: notes-sls-base
+service: notes-sls-base
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: us-east-1
+  environment:
+    JWT_SECRET: ${env:JWT_SECRET}
+    DYNAMODB_TABLE: notesTable
+    DYNAMODB_USER_TABLE: usersTable
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - arn:aws:dynamodb:${self:provider.region}:*:table/notesTable
+        - arn:aws:dynamodb:${self:provider.region}:*:table/usersTable
+
+functions:
+  app:
+    handler: dist/index.handler
+    events:
+      - http:
+          path: /
+          method: any
+      - http:
+          path: /{proxy+}
+          method: any
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: 'node16'
+    platform: 'node'
+    concurrency: 10
+
+resources:
+  Resources:
+    NotesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: notesTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: email-index
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+
+  Outputs:
+    NotesTableArn:
+      Value: !GetAtt NotesTable.Arn
+      Export:
+        Name: NotesTableArn
+
+    UsersTableArn:
+      Value: !GetAtt UsersTable.Arn
+      Export:
+        Name: UsersTableArn
