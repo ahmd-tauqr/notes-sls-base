@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const TableName = process.env.DYNAMODB_TABLE as string;
 
-export const getNoteById = async (userId: string, noteId: string) => {
+export const getNoteById = async (userId: string, id: string) => {
   const params = {
     TableName,
-    Key: { userId, noteId },
+    Key: { userId, id },
   };
 
   const result = await dynamoDb.get(params).promise();
@@ -29,7 +29,7 @@ export const getAllNotesByUser = async (userId: string) => {
 };
 
 export const createNote = async (note: any) => {
-  note.noteId = uuidv4();
+  note.id = uuidv4();
   const params = {
     TableName,
     Item: note,
@@ -39,10 +39,10 @@ export const createNote = async (note: any) => {
   return note;
 };
 
-export const updateNote = async (userId: string, noteId: string, note: any) => {
+export const updateNote = async (userId: string, id: string, note: any) => {
   const params = {
     TableName,
-    Key: { userId, noteId },
+    Key: { userId, id },
     UpdateExpression: 'set title = :title, content = :content',
     ExpressionAttributeValues: {
       ':title': note.title,
@@ -55,10 +55,10 @@ export const updateNote = async (userId: string, noteId: string, note: any) => {
   return note;
 };
 
-export const deleteNote = async (userId: string, noteId: string) => {
+export const deleteNote = async (userId: string, id: string) => {
   const params = {
     TableName,
-    Key: { userId, noteId },
+    Key: { userId, id },
   };
 
   await dynamoDb.delete(params).promise();

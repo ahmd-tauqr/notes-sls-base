@@ -3,8 +3,8 @@ import { fetchNote, fetchAllNotes, addNote, modifyNote, removeNote, searchUserNo
 
 export const getNote = async (req: Request, res: Response) => {
   const userId = (req.user as any).id;
-  const noteId = req.params.id;
-  const note = await fetchNote(userId, noteId);
+  const id = req.params.id;
+  const note = await fetchNote(userId, id);
   if (!note) {
     return res.status(404).send({ error: 'Note not found' });
   }
@@ -26,20 +26,20 @@ export const createNote = async (req: Request, res: Response) => {
 
 export const updateNote = async (req: Request, res: Response) => {
   const userId = (req.user as any).id;
-  const noteId = req.params.id;
+  const id = req.params.id;
   const note = { ...req.body };
-  const updatedNote = await modifyNote(userId, noteId, note);
+  const updatedNote = await modifyNote(userId, id, note);
   res.send(updatedNote);
 };
 
 export const deleteNote = async (req: Request, res: Response) => {
   const userId = (req.user as any).id;
-  const noteId = req.params.id;
-  const note = await fetchNote(userId, noteId);
+  const id = req.params.id;
+  const note = await fetchNote(userId, id);
   if (!note) {
     return res.status(404).send({ error: 'Note not found' });
   }
-  await removeNote(userId, noteId);
+  await removeNote(userId, id);
   res.sendStatus(204);
 };
 
