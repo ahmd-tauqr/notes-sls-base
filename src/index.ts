@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getNote, createNote, updateNote, deleteNote } from './controllers/noteController';
+import { getNote, getAllNotes, createNote, updateNote, deleteNote, searchNotes } from './controllers/noteController';
 import { signUpController, signInController } from './controllers/userController';
 import { authMiddleware } from './middlewares/authMiddleware';
 import { logger } from './utils/logger';
@@ -17,10 +17,12 @@ app.post('/signup', signUpController);
 app.post('/signin', signInController);
 
 // Note routes
+app.get('/notes', authMiddleware, getAllNotes);
 app.get('/notes/:id', authMiddleware, getNote);
 app.post('/notes', authMiddleware, createNote);
 app.put('/notes/:id', authMiddleware, updateNote);
 app.delete('/notes/:id', authMiddleware, deleteNote);
+app.get('/search', authMiddleware, searchNotes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

@@ -11,6 +11,7 @@ This project is a serverless application built with Node.js, Express, and TypeSc
 - [Endpoints](#endpoints)
 - [Testing with Postman](#testing-with-postman)
 - [Project Structure](#project-structure)
+- [Conclusion](#conclusion)
 
 ## Prerequisites
 
@@ -102,12 +103,17 @@ After deployment, you will get URLs for the API endpoints.
   - **Body:**
     ```json
     {
-      "id": "1",
+      "title": "Test Note",
       "content": "This is a test note"
     }
     ```
 
-- **Get Note:**
+- **Get All Notes:**
+  - **URL:** `GET /notes`
+  - **Headers:**
+    - `Authorization: Bearer YOUR_JWT_TOKEN`
+
+- **Get Note by ID:**
   - **URL:** `GET /notes/{id}`
   - **Headers:**
     - `Authorization: Bearer YOUR_JWT_TOKEN`
@@ -120,12 +126,18 @@ After deployment, you will get URLs for the API endpoints.
   - **Body:**
     ```json
     {
+      "title": "Updated Note",
       "content": "This is an updated test note"
     }
     ```
 
 - **Delete Note:**
   - **URL:** `DELETE /notes/{id}`
+  - **Headers:**
+    - `Authorization: Bearer YOUR_JWT_TOKEN`
+
+- **Search Notes:**
+  - **URL:** `GET /search?q={searchString}`
   - **Headers:**
     - `Authorization: Bearer YOUR_JWT_TOKEN`
 
@@ -165,32 +177,43 @@ After deployment, you will get URLs for the API endpoints.
    - Body:
      ```json
      {
-       "id": "1",
+       "title": "Test Note",
        "content": "This is a test note"
      }
      ```
 
-4. **Get Note:**
+4. **Get All Notes:**
    - Create a new GET request in Postman.
-   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes/1`
+   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes`
    - Headers: `Authorization: Bearer YOUR_JWT_TOKEN`
 
-5. **Update Note:**
+5. **Get Note by ID:**
+   - Create a new GET request in Postman.
+   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes/{id}`
+   - Headers: `Authorization: Bearer YOUR_JWT_TOKEN`
+
+6. **Update Note:**
    - Create a new PUT request in Postman.
-   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes/1`
+   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes/{id}`
    - Headers:
      - `Content-Type: application/json`
      - `Authorization: Bearer YOUR_JWT_TOKEN`
    - Body:
      ```json
      {
+       "title": "Updated Note",
        "content": "This is an updated test note"
      }
      ```
 
-6. **Delete Note:**
+7. **Delete Note:**
    - Create a new DELETE request in Postman.
-   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes/1`
+   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/notes/{id}`
+   - Headers: `Authorization: Bearer YOUR_JWT_TOKEN`
+
+8. **Search Notes:**
+   - Create a new GET request in Postman.
+   - URL: `https://your-api-id.execute-api.your-region.amazonaws.com/dev/search?q=test`
    - Headers: `Authorization: Bearer YOUR_JWT_TOKEN`
 
 ## Project Structure
