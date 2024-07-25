@@ -14,8 +14,8 @@ export const signUpController = async (req: Request, res: Response) => {
 
 export const signInController = async (req: Request, res: Response) => {
   try {
-    const user = await signIn(req.body.email, req.body.password);
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+    const {id, email} = await signIn(req.body.email, req.body.password);
+    const token = jwt.sign({ id, email}, process.env.JWT_SECRET as string, { expiresIn: '1h' });
     res.send({ token });
   } catch (error) {
     const err = error as Error;
