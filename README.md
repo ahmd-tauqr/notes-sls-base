@@ -26,7 +26,7 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/ahmd.tauqr/notes-sls-base.git
+   git clone https://github.com/ahmd-tauqr/notes-sls-base.git
    cd notes-sls-base
    ```
 
@@ -76,7 +76,6 @@ After deployment, you will get URLs for the API endpoints.
   - **Body:**
     ```json
     {
-      "id": "user1",
       "email": "user@example.com",
       "password": "password123"
     }
@@ -139,7 +138,6 @@ After deployment, you will get URLs for the API endpoints.
    - Body:
      ```json
      {
-       "id": "user1",
        "email": "user@example.com",
        "password": "password123"
      }
