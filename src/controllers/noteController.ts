@@ -35,6 +35,10 @@ export const updateNote = async (req: Request, res: Response) => {
 export const deleteNote = async (req: Request, res: Response) => {
   const userId = (req.user as any).id;
   const noteId = req.params.id;
+  const note = await fetchNote(userId, noteId);
+  if (!note) {
+    return res.status(404).send({ error: 'Note not found' });
+  }
   await removeNote(userId, noteId);
   res.sendStatus(204);
 };
