@@ -1,8 +1,8 @@
-import AWS from 'aws-sdk';
+import DynamoDB from 'aws-sdk/clients/dynamodb';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const dynamoDb = new DynamoDB.DocumentClient();
 const TableName = process.env.DYNAMODB_USER_TABLE as string;
 
 export const getUserByEmail = async (email: string) => {
